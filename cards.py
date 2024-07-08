@@ -10,12 +10,18 @@ class Cards:
 
     def load_cards(self):
         with open('cards.json', 'r') as cards_file:
-            cards = json.load(cards_file)
-        for key in cards.keys():
+            self.cards_dict = json.load(cards_file)
+        for key in self.cards_dict.keys():
             # print(f"Key: {key}, Value: {cards[key]}") 
-            new_card = Card(key, cards[key])
+            new_card = Card(key, self.cards_dict[key])
             self.cards.append(new_card)
-
+    
+    def add_card(self, front, back):
+        new_card = Card(front, back)
+        self.cards.append(new_card)
+        self.cards_dict.update({back: front})
+        with open('cards.json', 'w') as cards_file:
+            json.dump(self.cards_dict, cards_file)
 
     def __iter__(self):
         self.index = 0

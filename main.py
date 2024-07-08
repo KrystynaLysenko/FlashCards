@@ -86,8 +86,8 @@ class App(ctk.CTk):
         self.learn_frame = ctk.CTkFrame(self.root)
         self.learn_frame.grid(sticky="swen")
         
-        self.side_label = ctk.CTkLabel(self.learn_frame, text="", font=('CTkFont', 20))
-        self.side_label.grid(column=1, pady=10)
+        self.side_label = ctk.CTkLabel(self.learn_frame, text="Word:", font=('CTkFont', 20))
+        self.side_label.grid(column=1, pady=10, columnspan=3)
         
         self.card_label = ctk.CTkLabel(self.learn_frame, text=self.current_card.get_front(), font=('CTkFont', 30))
         self.card_label.grid(column=1, pady=130, rowspan=6, columnspan=3)
@@ -95,7 +95,7 @@ class App(ctk.CTk):
         def next_card():
             self.previous_card = self.current_card
             self.current_card = next(self.cards_iterator)
-            self.side_label.configure(text='')
+            self.side_label.configure(text="Word:")
             self.card_label.configure(text=self.current_card.get_front())
             self.previous_btn.configure(state='normal', fg_color='red')
         
@@ -106,11 +106,15 @@ class App(ctk.CTk):
                 
         def flip_card():
             flipped_text = self.current_card.get_back()
-            self.card_label.configure(text=flipped_text)
-            self.side_label.configure(text='Translation:')
+            if self.card_label.cget("text") == flipped_text:
+                self.side_label.configure(text='Word:')
+                self.card_label.configure(text=self.current_card.get_front())
+            else:
+                self.side_label.configure(text='Translation:')
+                self.card_label.configure(text=flipped_text)
             
-        flip_btn = ctk.CTkButton(self.learn_frame, text="Flip", corner_radius= self.corner_radius, fg_color='yellow', text_color='black', command=flip_card)
-        flip_btn.grid(columnspan=1, column=2, row=6, padx=50)
+        self.flip_btn = ctk.CTkButton(self.learn_frame, text="Flip", corner_radius= self.corner_radius, fg_color='yellow', text_color='black', command=flip_card)
+        self.flip_btn.grid(columnspan=1, column=2, row=6, padx=50)
         
         next_btn = ctk.CTkButton(self.learn_frame, text='Next', corner_radius= self.corner_radius, command=next_card)
         next_btn.grid(pady=15, padx=10, column=3, row=6)

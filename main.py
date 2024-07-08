@@ -53,7 +53,7 @@ class App(ctk.CTk):
     def draw_add_screen(self):
         self.frames[-1].destroy()
         self.add_frame = ctk.CTkFrame(self.root)
-        self.add_frame.grid(sticky="swen")
+        self.add_frame.pack(fill='both', expand=True)
         
         
         label_front = ctk.CTkLabel(self.add_frame, text='Enter text on the front side:', font=('Roboto', 20))
@@ -72,10 +72,10 @@ class App(ctk.CTk):
             self.create_popup("Success", "New card added!")
             self.draw_add_screen()
         
-        add_btn = ctk.CTkButton(self.add_frame, text="Add", command=add_card)
-        add_btn.grid(column=0, pady=50, row=6)
-        cancel_btn = ctk.CTkButton(self.add_frame, text="Cancel", command=self.draw_home_screen)
-        cancel_btn.grid(column=1, pady=50, row=6)
+        add_btn = ctk.CTkButton(self.add_frame, text="Add", command=add_card, corner_radius= self.corner_radius)
+        add_btn.grid(column=0, pady=50, row=6, padx=20)
+        cancel_btn = ctk.CTkButton(self.add_frame, text="Cancel", command=self.draw_home_screen, corner_radius= self.corner_radius)
+        cancel_btn.grid(column=1, pady=50, row=6, padx=20)
         self.frames.append(self.add_frame)
         
     

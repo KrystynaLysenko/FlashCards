@@ -19,7 +19,7 @@ class Cards:
     def add_card(self, front, back):
         new_card = Card(front, back)
         self.cards.append(new_card)
-        self.cards_dict.update({back: front})
+        self.cards_dict.update({front: back})
         with open('cards.json', 'w') as cards_file:
             json.dump(self.cards_dict, cards_file)
 

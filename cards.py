@@ -10,6 +10,12 @@ class Card:
     def get_value(self):
         return self.value
     
+    def get_front_value(self):
+        return self.value[0]
+    
+    def get_back_value(self):
+        return self.value[1]
+    
     def get_next_card(self):
         return self.next_card
     
@@ -23,7 +29,7 @@ class Card:
         self.next_card = next_card
         
     def set_prev_card(self, prev_card):
-        self.next_card
+        self.prev_card = prev_card
         
         
 
@@ -32,7 +38,7 @@ class CardList:
     def __init__(self) -> None:
         self.first_card = None
         self.last_card = None
-        self.current_card = None
+        self.current_card = self.first_card
         
         
     def set_first_card(self, new_first_card):
@@ -81,10 +87,12 @@ class CardList:
             
     
     def traverse_forward(self):
-        if self.current_card in None:
+        if self.current_card is None:
             self.current_card = self.first_card
         else:
             self.current_card = self.current_card.get_next_card()
+        print("Current card is: " + str(self.current_card))   
+        return self.current_card
             
             
     def traverse_backward(self):
@@ -92,6 +100,8 @@ class CardList:
             self.current_card = self.last_card
         else:
             self.current_card = self.current_card.get_prev_card()
+        print("Current card is: " + str(self.current_card))
+        return self.current_card
             
             
     def load_cards(self):
@@ -109,4 +119,3 @@ class CardList:
             card_string += str(self.current_card.get_value()) + "\n"
         
         return card_string
-            

@@ -16,7 +16,7 @@ class Card:
     def get_back_value(self):
         return self.value[1]
     
-    def get_image_url(self):
+    def get_img_path(self):
         return self.value[2]
     
     def get_next_card(self):

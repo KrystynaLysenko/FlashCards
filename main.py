@@ -59,7 +59,6 @@ class App(ctk.CTk):
         # self.frames.update(self.home_frame)
         self.frames.append(self.home_frame)
         
-        
     def draw_add_screen(self):
         self.frames[-1].destroy()
         self.add_frame = ctk.CTkFrame(self.root, fg_color=FG_COLOR)
@@ -83,9 +82,9 @@ class App(ctk.CTk):
             # self.draw_add_screen()
             pass
         
-        add_btn = ctk.CTkButton(self.add_frame, text="Add", command=add_card, corner_radius= self.corner_radius)
+        add_btn = ctk.CTkButton(self.add_frame, text="Add", command=add_card, corner_radius= self.corner_radius, fg_color=BTN_DARK, hover_color=BTN_DARK_HOVER)
         add_btn.grid(column=0, pady=50, row=6, padx=20)
-        cancel_btn = ctk.CTkButton(self.add_frame, text="Cancel", command=self.draw_home_screen, corner_radius= self.corner_radius)
+        cancel_btn = ctk.CTkButton(self.add_frame, text="Cancel", command=self.draw_home_screen, corner_radius= self.corner_radius, fg_color=BTN_DARK, hover_color=BTN_DARK_HOVER)
         cancel_btn.grid(column=1, pady=50, row=6, padx=20)
         self.frames.append(self.add_frame)
         
@@ -103,7 +102,9 @@ class App(ctk.CTk):
         self.side_label = ctk.CTkLabel(self.learn_frame, text="Word:", font=('CTkFont', 20), text_color=FG_TEXT)
         self.side_label.grid(column=1, pady=10, columnspan=3, row=0)
         
-        self.image_label = ctk.CTkLabel(self.learn_frame, image="", text="")
+        self.empty_image = ctk.CTkImage(Image.new('RGB', (1, 1)))
+        
+        self.image_label = ctk.CTkLabel(self.learn_frame, image=self.empty_image, text="")
         self.image_label.grid(column=1, columnspan=3, rowspan=6, row=1)
         
         self.card_label = ctk.CTkLabel(self.learn_frame, text=self.current_card.get_front_value(), font=('CTkFont', 30), text_color=FG_TEXT)
@@ -139,18 +140,17 @@ class App(ctk.CTk):
         def reset_flip_btn_and_label():
             self.flip_btn.configure(text="Flip", command=flip_card)
             self.side_label.configure(text="Word:")
-            self.image_label.configure(image="")
+            self.image_label.configure(image=self.empty_image)
             
         def show_image():
-            image_url = self.current_card.get_image_url()
-            print(image_url)
+            image_url = self.current_card.get_img_path()
             try:
                 img=Image.open(image_url)
                 img= img.resize((300, 225))
-                photo_img = ImageTk.PhotoImage(img)
+                photo_img = ctk.CTkImage(light_image=img, dark_image=img, size=(img.width, img.height))
             except Exception as e:
                 print(e)
-                return ""
+                return self.empty_image
            
             return photo_img
                 

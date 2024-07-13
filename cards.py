@@ -16,6 +16,9 @@ class Card:
     def get_back_value(self):
         return self.value[1]
     
+    def get_image_url(self):
+        return self.value[2]
+    
     def get_next_card(self):
         return self.next_card
     
@@ -90,8 +93,7 @@ class CardList:
         if self.current_card is None:
             self.current_card = self.first_card
         else:
-            self.current_card = self.current_card.get_next_card()
-        print("Current card is: " + str(self.current_card))   
+            self.current_card = self.current_card.get_next_card() 
         return self.current_card
             
             
@@ -100,7 +102,6 @@ class CardList:
             self.current_card = self.last_card
         else:
             self.current_card = self.current_card.get_prev_card()
-        print("Current card is: " + str(self.current_card))
         return self.current_card
             
             
@@ -108,7 +109,7 @@ class CardList:
         with open('cards.json', 'r') as card_file:
             self.card_dict = json.load(card_file)
         for key in self.card_dict:
-            self.add_to_end((key, self.card_dict[key]))
+            self.add_to_end((key, self.card_dict[key][0], self.card_dict[key][1]))
             
      
     # This method does not work!!!

@@ -1,5 +1,6 @@
 import tkinter as tk
 import customtkinter as ctk
+from PIL import Image, ImageTk
 
 from cards import CardList
 
@@ -100,10 +101,14 @@ class App(ctk.CTk):
         self.current_card = self.card_list.traverse_forward()
         
         self.side_label = ctk.CTkLabel(self.learn_frame, text="Word:", font=('CTkFont', 20), text_color=FG_TEXT)
-        self.side_label.grid(column=1, pady=10, columnspan=3)
+        self.side_label.grid(column=1, pady=10, columnspan=3, row=0)
+        
+        self.image_label = ctk.CTkLabel(self.learn_frame, image="", text="")
+        self.image_label.grid(column=1, columnspan=3, rowspan=6, row=1)
         
         self.card_label = ctk.CTkLabel(self.learn_frame, text=self.current_card.get_front_value(), font=('CTkFont', 30), text_color=FG_TEXT)
-        self.card_label.grid(column=1, pady=130, rowspan=6, columnspan=3)
+        self.card_label.grid(column=1, pady=130, rowspan=6, columnspan=3, row=1)
+        
                 
         def next_card():
             self.current_card = self.card_list.traverse_forward()
@@ -125,24 +130,41 @@ class App(ctk.CTk):
         def flip_card():
             self.side_label.configure(text='Translation:')
             self.card_label.configure(text=self.current_card.get_back_value())
+            self.image_label.configure(image=show_image())
             def unflip():
                 self.card_label.configure(text=self.current_card.get_front_value())
-                reset_flip_btn_and_label() 
+                reset_flip_btn_and_label()
             self.flip_btn.configure(text="Unflip", command=unflip)
             
         def reset_flip_btn_and_label():
             self.flip_btn.configure(text="Flip", command=flip_card)
             self.side_label.configure(text="Word:")
+            self.image_label.configure(image="")
+            
+        def show_image():
+            image_url = self.current_card.get_image_url()
+            print(image_url)
+            try:
+                img=Image.open(image_url)
+                img= img.resize((300, 225))
+                photo_img = ImageTk.PhotoImage(img)
+            except Exception as e:
+                print(e)
+                return ""
+           
+            return photo_img
+                
+                
             
             
         self.flip_btn = ctk.CTkButton(self.learn_frame, text="Flip", corner_radius=self.corner_radius, fg_color=BTN_LIGHT, hover_color=BTN_LIGHT_HOVER, text_color='black', command=flip_card)
-        self.flip_btn.grid(columnspan=1, column=2, row=6, padx=50)
+        self.flip_btn.grid(columnspan=1, column=2, row=10, padx=50)
         
         self.next_btn = ctk.CTkButton(self.learn_frame, text='Next', corner_radius= self.corner_radius, fg_color=BTN_DARK, command=next_card)
-        self.next_btn.grid(pady=15, padx=10, column=3, row=6)
+        self.next_btn.grid(pady=15, padx=10, column=3, row=10)
         
         self.prev_btn = ctk.CTkButton(self.learn_frame, text='Previous', corner_radius= self.corner_radius, state='disabled', fg_color=BTN_DARK, command=prev_card)
-        self.prev_btn.grid(pady=10, padx=10, column=1, row=6)
+        self.prev_btn.grid(pady=10, padx=10, column=1, row=10)
         self.frames.append(self.learn_frame)
         
 

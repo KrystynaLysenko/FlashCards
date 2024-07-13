@@ -1,7 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
 import customtkinter as ctk
-from cards_old import Cards
 
 from cards import CardList
 
@@ -9,8 +7,6 @@ from cards import CardList
 class App(ctk.CTk):
  
     def __init__(self) -> None:
-        self.cards = Cards()
-        self.cards_iterator = self.cards.__iter__()
         self.frames = []
         self.root = ctk.CTk()
         self.root.title("FlashCards")
@@ -83,8 +79,6 @@ class App(ctk.CTk):
         
     
     def draw_learn_screen(self):
-        self.current_card = next(self.cards_iterator)
-        self.prev_card = None
         self.frames[-1].destroy()
         self.learn_frame = ctk.CTkFrame(self.root)
         self.learn_frame.grid(sticky="swen")

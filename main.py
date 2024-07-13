@@ -1,14 +1,12 @@
 import tkinter as tk
-from tkinter import ttk
 import customtkinter as ctk
-from cards import Cards
+
+from cards import CardList
 
 
 class App(ctk.CTk):
  
     def __init__(self) -> None:
-        self.cards = Cards()
-        self.cards_iterator = self.cards.__iter__()
         self.frames = []
         self.root = ctk.CTk()
         self.root.title("FlashCards")
@@ -67,10 +65,11 @@ class App(ctk.CTk):
         entry_back.grid(pady=10, columnspan=2)
         
         def add_card():
-            self.cards.add_card(entry_front.get(), entry_back.get())
-            self.add_frame.destroy()
-            self.create_popup("Success", "New card added!")
-            self.draw_add_screen()
+            # self.cards.add_card(entry_front.get(), entry_back.get())
+            # self.add_frame.destroy()
+            # self.create_popup("Success", "New card added!")
+            # self.draw_add_screen()
+            pass
         
         add_btn = ctk.CTkButton(self.add_frame, text="Add", command=add_card, corner_radius= self.corner_radius)
         add_btn.grid(column=0, pady=50, row=6, padx=20)
@@ -80,47 +79,54 @@ class App(ctk.CTk):
         
     
     def draw_learn_screen(self):
-        self.current_card = next(self.cards_iterator)
-        self.previous_card = None
         self.frames[-1].destroy()
         self.learn_frame = ctk.CTkFrame(self.root)
         self.learn_frame.grid(sticky="swen")
         
+        # Create new card list and load cards from .json file
+        self.card_list = CardList()
+        self.card_list.load_cards()
+        self.current_card = self.card_list.traverse_forward()
+        
         self.side_label = ctk.CTkLabel(self.learn_frame, text="Word:", font=('CTkFont', 20))
         self.side_label.grid(column=1, pady=10, columnspan=3)
         
-        self.card_label = ctk.CTkLabel(self.learn_frame, text=self.current_card.get_front(), font=('CTkFont', 30))
+        self.card_label = ctk.CTkLabel(self.learn_frame, text=self.current_card.get_front_value(), font=('CTkFont', 30))
         self.card_label.grid(column=1, pady=130, rowspan=6, columnspan=3)
                 
         def next_card():
-            self.previous_card = self.current_card
-            self.current_card = next(self.cards_iterator)
-            self.side_label.configure(text="Word:")
-            self.card_label.configure(text=self.current_card.get_front())
-            self.previous_btn.configure(state='normal', fg_color='red')
-        
-        def previous_card():
-            self.current_card = self.previous_card
-            self.previous_btn.configure(state='disabled', fg_color='grey') 
-            self.card_label.configure(text=self.previous_card.get_front()) 
+            self.current_card = self.card_list.traverse_forward()
+            self.card_label.configure(text=self.current_card.get_front_value())
+            self.prev_btn.configure(state='normal', fg_color="green")
+            reset_flip_btn_and_label()
+            
+            
+        def prev_card():
+            self.current_card = self.card_list.traverse_backward()
+            self.card_label.configure(text=self.current_card.get_front_value())
+            reset_flip_btn_and_label()
                 
         def flip_card():
-            flipped_text = self.current_card.get_back()
-            if self.card_label.cget("text") == flipped_text:
-                self.side_label.configure(text='Word:')
-                self.card_label.configure(text=self.current_card.get_front())
-            else:
-                self.side_label.configure(text='Translation:')
-                self.card_label.configure(text=flipped_text)
+            self.side_label.configure(text='Translation:')
+            self.card_label.configure(text=self.current_card.get_back_value())
+            def unflip():
+                self.card_label.configure(text=self.current_card.get_front_value())
+                reset_flip_btn_and_label() 
+            self.flip_btn.configure(text="Unflip", command=unflip)
             
-        self.flip_btn = ctk.CTkButton(self.learn_frame, text="Flip", corner_radius= self.corner_radius, fg_color='yellow', text_color='black', command=flip_card)
+        def reset_flip_btn_and_label():
+            self.flip_btn.configure(text="Flip", command=flip_card)
+            self.side_label.configure(text="Word")
+            
+            
+        self.flip_btn = ctk.CTkButton(self.learn_frame, text="Flip", corner_radius=self.corner_radius, fg_color='yellow', hover_color='red', text_color='black', command=flip_card)
         self.flip_btn.grid(columnspan=1, column=2, row=6, padx=50)
         
         next_btn = ctk.CTkButton(self.learn_frame, text='Next', corner_radius= self.corner_radius, command=next_card)
         next_btn.grid(pady=15, padx=10, column=3, row=6)
         
-        self.previous_btn = ctk.CTkButton(self.learn_frame, text='Previous', corner_radius= self.corner_radius, state='disabled', fg_color='grey', command=previous_card)
-        self.previous_btn.grid(pady=10, padx=10, column=1, row=6)
+        self.prev_btn = ctk.CTkButton(self.learn_frame, text='Previous', corner_radius= self.corner_radius, state='disabled', fg_color='grey', command=prev_card)
+        self.prev_btn.grid(pady=10, padx=10, column=1, row=6)
         self.frames.append(self.learn_frame)
         
 

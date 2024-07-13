@@ -98,12 +98,17 @@ class App(ctk.CTk):
             self.current_card = self.card_list.traverse_forward()
             self.card_label.configure(text=self.current_card.get_front_value())
             self.prev_btn.configure(state='normal', fg_color="green")
+            if self.current_card.get_next_card() is None:
+                self.next_btn.configure(state='disabled')
             reset_flip_btn_and_label()
             
             
         def prev_card():
             self.current_card = self.card_list.traverse_backward()
             self.card_label.configure(text=self.current_card.get_front_value())
+            self.next_btn.configure(state='normal')
+            if self.current_card.get_prev_card() is None:
+                self.prev_btn.configure(state='disabled')
             reset_flip_btn_and_label()
                 
         def flip_card():
@@ -122,8 +127,8 @@ class App(ctk.CTk):
         self.flip_btn = ctk.CTkButton(self.learn_frame, text="Flip", corner_radius=self.corner_radius, fg_color='yellow', hover_color='red', text_color='black', command=flip_card)
         self.flip_btn.grid(columnspan=1, column=2, row=6, padx=50)
         
-        next_btn = ctk.CTkButton(self.learn_frame, text='Next', corner_radius= self.corner_radius, command=next_card)
-        next_btn.grid(pady=15, padx=10, column=3, row=6)
+        self.next_btn = ctk.CTkButton(self.learn_frame, text='Next', corner_radius= self.corner_radius, command=next_card)
+        self.next_btn.grid(pady=15, padx=10, column=3, row=6)
         
         self.prev_btn = ctk.CTkButton(self.learn_frame, text='Previous', corner_radius= self.corner_radius, state='disabled', fg_color='grey', command=prev_card)
         self.prev_btn.grid(pady=10, padx=10, column=1, row=6)

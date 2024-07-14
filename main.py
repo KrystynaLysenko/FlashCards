@@ -75,8 +75,8 @@ class App(ctk.CTk):
         add_card_btn = ctk.CTkButton(self.home_frame, text="ADD NEW CARD", font=BTN_FONT, corner_radius=self.corner_radius, fg_color=BTN_DARK, hover_color=BTN_DARK_HOVER, command=self.draw_add_screen, height=50, width=200)
         add_card_btn.grid(column=1, row=4, pady=20)
         
-        view_btn = ctk.CTkButton(self.home_frame, text="NONE", font=BTN_FONT, corner_radius=self.corner_radius, fg_color=BTN_DARK, hover_color=BTN_DARK_HOVER, command=self.draw_learn_screen, height=50, width=200)
-        view_btn.grid(column=1, row=5, pady=20)
+        exit_btn = ctk.CTkButton(self.home_frame, text="EXIT", font=BTN_FONT, corner_radius=self.corner_radius, fg_color=BTN_DARK, hover_color=BTN_DARK_HOVER, command=exit, height=50, width=200)
+        exit_btn.grid(column=1, row=5, pady=20)
         # Updates a list of frames
         # self.frames.update(self.home_frame)
         self.frames.append(self.home_frame)
@@ -210,7 +210,7 @@ class App(ctk.CTk):
             self.card_label.configure(text=self.current_card.get_back_value(), font=(ctk.CTkFont, 30, "bold"))
             self.image_label.configure(image=show_image())
             def unflip():
-                self.card_label.configure(text=self.current_card.get_front_value())
+                self.card_label.configure(text=self.current_card.get_front_value(), font=('CTkFont', 30))
                 reset_flip_btn_and_label()
             self.flip_btn.configure(command=unflip)
             

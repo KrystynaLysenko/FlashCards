@@ -1,7 +1,8 @@
 # FlashCards App
 
 ## Description
-The FlashLearn App is a Python-based application that allows users to create, view, and learn flashcards. The graphical user interface (GUI) is built using the `customtkinter` library, and the card data is stored in a JSON file. This is my first attempt of working with `customtkinter` and `tkinter` in general.
+The FlashLearn App is a Python-based application that allows users to create, view, and learn flashcards. The graphical user interface (GUI) is built using the `customtkinter` library, and the card data is stored in a JSON file.
+This is my first attempt of working with `customtkinter` and `tkinter` in general.
 
 ## Screenshots
  ![Home screen](screenshots/home.png)
@@ -73,7 +74,7 @@ Manages a doubly linked list of `Card` objects.
   - `load_cards()`: Load cards from a JSON file.
 
 ## Note
-- The functionality to add new cards through the GUI is not implemented yet.
+- **The functionality to add new cards through the GUI is not implemented yet.**
 
 ## License
 This project is licensed under the MIT License.

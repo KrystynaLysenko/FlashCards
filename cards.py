@@ -120,3 +120,14 @@ class CardList:
             card_string += str(self.current_card.get_value()) + "\n"
         
         return card_string
+    
+    def add_card(self, new_card_dict):
+        with open('cards.json', "r") as file:
+            cards = json.load(file)
+        
+        cards.update(new_card_dict)
+        
+        with open('cards.json', 'w') as file:
+            json.dump(cards, file, indent=4)
+            
+        self.load_cards()

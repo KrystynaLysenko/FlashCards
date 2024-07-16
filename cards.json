@@ -1,7 +1,22 @@
 {
-    "Haus": ["House", "assets/house.jpg"],
-    "Baum": ["Tree", "assets/tree.jpg"],
-    "Auto": ["Car", "assets/car.jpg"],
-    "Katze": ["Cat", "assets/cat.jpg"],
-    "Hund": ["Dog", "assets/dog.jpg"]
+    "Haus": [
+        "House",
+        "assets/house.jpg"
+    ],
+    "Baum": [
+        "Tree",
+        "assets/tree.jpg"
+    ],
+    "Auto": [
+        "Car",
+        "assets/car.jpg"
+    ],
+    "Katze": [
+        "Cat",
+        "assets/cat.jpg"
+    ],
+    "Hund": [
+        "Dog",
+        "assets/dog.jpg"
+    ]
 }

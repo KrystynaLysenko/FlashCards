@@ -1,7 +1,8 @@
 import tkinter as tk
 import customtkinter as ctk
 from PIL import Image, ImageTk
-
+import requests
+from io import BytesIO
 from cards import CardList
 
 FG_COLOR = "#37474F"
@@ -121,32 +122,40 @@ class App(ctk.CTk):
         
     def draw_add_screen(self):
         self.frames[-1].destroy()
-        self.add_frame = ctk.CTkFrame(self.root, fg_color=FG_COLOR)
+        self.add_frame = ctk.CTkFrame(self.root, fg_color=FG_COLOR, bg_color=FG_COLOR, corner_radius=0)
         self.add_frame.grid(sticky="nsew")
         
+        label_front = ctk.CTkLabel(self.add_frame, text='Enter text on the front side:', font=('Roboto', 20), text_color=FG_TEXT, width=400)
+        label_front.grid(padx=200, column=1, columnspan=2, pady=10)
         
-        label_front = ctk.CTkLabel(self.add_frame, text='Enter text on the front side:', font=('Roboto', 20), text_color=FG_TEXT)
-        label_front.grid(padx=50, columnspan=2, pady=10)
-        entry_front = ctk.CTkEntry(self.add_frame)
-        entry_front.grid(pady=10, columnspan=2)
+        entry_front = ctk.CTkEntry(self.add_frame,  width=350, height=40, font=(ctk.CTkFont, 30))
+        entry_front.grid(padx=200, column=1, columnspan=2, pady=10)
         
         label_back = ctk.CTkLabel(self.add_frame, text='Enter text on the back side:', font=('Roboto', 20), text_color=FG_TEXT)
-        label_back.grid(padx=50, columnspan=2, pady=10)
-        entry_back = ctk.CTkEntry(self.add_frame)
-        entry_back.grid(pady=10, columnspan=2)
+        label_back.grid(padx=200, column=1, columnspan=2, pady=10)
+        
+        entry_back = ctk.CTkEntry(self.add_frame, width=350, height=40, font=(ctk.CTkFont, 30))
+        entry_back.grid(padx=200, column=1, columnspan=2, pady=10)
+        
+        label_image = ctk.CTkLabel(self.add_frame, text='Enter URL or path to image (optional): ', font=('Roboto', 20), text_color=FG_TEXT)
+        label_image.grid(padx=200, column=1, columnspan=2, pady=10)
+        
+        entry_image = ctk.CTkEntry(self.add_frame, width=350, height=40, font=(ctk.CTkFont, 30))
+        entry_image.grid(padx=200, column=1, columnspan=2, pady=10)
         
         def add_card():
-            # self.cards.add_card(entry_front.get(), entry_back.get())
-            # self.add_frame.destroy()
-            # self.create_popup("Success", "New card added!")
+            card_dict = {}
+            card_dict[entry_front.get()] = [entry_back.get(), entry_image.get()]
+            self.card_list.add_card(card_dict)
+            self.create_popup("Success", "New card added!")
             # self.draw_add_screen()
             pass
         
-        add_btn = ctk.CTkButton(self.add_frame, text="Add", font=BTN_FONT, command=add_card, corner_radius=self.corner_radius, fg_color=BTN_DARK, hover_color=BTN_DARK_HOVER)
-        add_btn.grid(column=0, pady=50, row=6, padx=20)
+        add_btn = ctk.CTkButton(self.add_frame, text="Add", font=BTN_FONT, command=add_card, corner_radius=self.corner_radius, fg_color=BTN_DARK, hover_color=BTN_DARK_HOVER, height=50, width=200)
+        add_btn.grid(padx=20, column=1, columnspan=1, pady=10)
         
-        cancel_btn = ctk.CTkButton(self.add_frame, text="Cancel", font=BTN_FONT, command=self.draw_home_screen, corner_radius= self.corner_radius, fg_color=BTN_DARK, hover_color=BTN_DARK_HOVER)
-        cancel_btn.grid(column=1, pady=50, row=6, padx=20)
+        cancel_btn = ctk.CTkButton(self.add_frame, text="Cancel", font=BTN_FONT, command=self.draw_home_screen, corner_radius=self.corner_radius, fg_color=BTN_DARK, hover_color=BTN_DARK_HOVER, height=50, width=200)
+        cancel_btn.grid(padx=20, column=2, columnspan=1, pady=10)
         self.frames.append(self.add_frame)
         
     
@@ -207,7 +216,7 @@ class App(ctk.CTk):
                 
         def flip_card():
             self.side_label.configure(text='Translation:')
-            self.card_label.configure(text=self.current_card.get_back_value(), font=(ctk.CTkFont, 30, "bold"))
+            self.card_label.configure(text=self.current_card.get_back_value(), font=(ctk.CTkFont, 30))
             self.image_label.configure(image=show_image())
             def unflip():
                 self.card_label.configure(text=self.current_card.get_front_value(), font=('CTkFont', 30))
@@ -220,9 +229,15 @@ class App(ctk.CTk):
             self.flip_btn.configure(command=flip_card)
             
         def show_image():
-            image_url = self.current_card.get_img_path()
+            image_path = self.current_card.get_img_path()
             try:
-                img=Image.open(image_url)
+                if 'http' in image_path:
+                    response = requests.get(image_path)
+                    img = Image.open(BytesIO(response.content))
+                elif image_path == "":
+                    return self.empty_image
+                else:
+                    img=Image.open(image_path)
                 # img= img.resize((300, 225))
                 photo_img = ctk.CTkImage(light_image=img, dark_image=img, size=(img.width, img.height))
             except Exception as e:
@@ -230,7 +245,6 @@ class App(ctk.CTk):
                 return self.empty_image
            
             return photo_img
-                
                 
             
         self.prev_btn = ctk.CTkButton(self.learn_frame, image=photo_prev_img, text="", corner_radius= self.corner_radius, font=BTN_FONT, state='disabled', fg_color='grey', hover_color=BTN_DARK_HOVER, command=prev_card)

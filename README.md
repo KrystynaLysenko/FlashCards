@@ -5,9 +5,14 @@ The FlashLearn App is a Python-based application that allows users to create, vi
 This is my first attempt of working with `customtkinter` and `tkinter` in general.
 
 ## Screenshots
+### 1. Home screen
  ![Home screen](screenshots/home.png)
+### 2. Card screen (front)
  ![Card screen](screenshots/card.png)
+### 3. Card screen (flipped)
  ![Flipped card screen](screenshots/flipped.png)
+### 4. Add card screen
+ ![Add card screen](screenshots/add.png)
  
 ## Features
 - **View Cards:** View all the flashcards in a scrollable list.
@@ -72,9 +77,6 @@ Manages a doubly linked list of `Card` objects.
   - `add_to_beginning(value_to_add)`, `add_to_end(value_to_add)`: Add cards to the beginning or end of the list.
   - `traverse_forward()`, `traverse_backward()`: Traverse the list.
   - `load_cards()`: Load cards from a JSON file.
-
-## Note
-- **The functionality to add new cards through the GUI is not implemented yet.**
 
 ## License
 This project is licensed under the MIT License.

@@ -148,8 +148,7 @@ class App(ctk.CTk):
             card_dict[entry_front.get()] = [entry_back.get(), entry_image.get()]
             self.card_list.add_card(card_dict)
             self.create_popup("Success", "New card added!")
-            # self.draw_add_screen()
-            pass
+            self.draw_add_screen()
         
         add_btn = ctk.CTkButton(self.add_frame, text="Add", font=BTN_FONT, command=add_card, corner_radius=self.corner_radius, fg_color=BTN_DARK, hover_color=BTN_DARK_HOVER, height=50, width=200)
         add_btn.grid(padx=50, column=1, columnspan=1, row=8, pady=100)

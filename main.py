@@ -129,19 +129,19 @@ class App(ctk.CTk):
         label_front.grid(padx=200, column=1, columnspan=2, pady=10)
         
         entry_front = ctk.CTkEntry(self.add_frame,  width=350, height=40, font=(ctk.CTkFont, 30))
-        entry_front.grid(padx=200, column=1, columnspan=2, pady=10)
+        entry_front.grid(padx=200, column=1, columnspan=2, pady=20)
         
         label_back = ctk.CTkLabel(self.add_frame, text='Enter text on the back side:', font=('Roboto', 20), text_color=FG_TEXT)
         label_back.grid(padx=200, column=1, columnspan=2, pady=10)
         
         entry_back = ctk.CTkEntry(self.add_frame, width=350, height=40, font=(ctk.CTkFont, 30))
-        entry_back.grid(padx=200, column=1, columnspan=2, pady=10)
+        entry_back.grid(padx=200, column=1, columnspan=2, pady=20)
         
         label_image = ctk.CTkLabel(self.add_frame, text='Enter URL or path to image (optional): ', font=('Roboto', 20), text_color=FG_TEXT)
         label_image.grid(padx=200, column=1, columnspan=2, pady=10)
         
         entry_image = ctk.CTkEntry(self.add_frame, width=350, height=40, font=(ctk.CTkFont, 30))
-        entry_image.grid(padx=200, column=1, columnspan=2, pady=10)
+        entry_image.grid(padx=200, column=1, columnspan=2, pady=20)
         
         def add_card():
             card_dict = {}
@@ -152,10 +152,10 @@ class App(ctk.CTk):
             pass
         
         add_btn = ctk.CTkButton(self.add_frame, text="Add", font=BTN_FONT, command=add_card, corner_radius=self.corner_radius, fg_color=BTN_DARK, hover_color=BTN_DARK_HOVER, height=50, width=200)
-        add_btn.grid(padx=20, column=1, columnspan=1, pady=10)
+        add_btn.grid(padx=50, column=1, columnspan=1, row=8, pady=100)
         
         cancel_btn = ctk.CTkButton(self.add_frame, text="Cancel", font=BTN_FONT, command=self.draw_home_screen, corner_radius=self.corner_radius, fg_color=BTN_DARK, hover_color=BTN_DARK_HOVER, height=50, width=200)
-        cancel_btn.grid(padx=20, column=2, columnspan=1, pady=10)
+        cancel_btn.grid(padx=50, column=2, columnspan=1, row=8, pady=100)
         self.frames.append(self.add_frame)
         
     
